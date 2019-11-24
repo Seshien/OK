@@ -152,12 +152,20 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="city.cpp" />
+    <ClCompile Include="gene.cpp" />
     <ClCompile Include="generator.cpp" />
-    <ClCompile Include="TSP_v2.cpp" />
+    <ClCompile Include="genetic_alg.cpp" />
+    <ClCompile Include="Greedy.cpp" />
+    <ClCompile Include="Tabo.cpp" />
+    <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="city.h" />
+    <ClInclude Include="gene.h" />
     <ClInclude Include="generator.h" />
+    <ClInclude Include="genetic_alg.h" />
+    <ClInclude Include="Greedy.h" />
+    <ClInclude Include="Tabo.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

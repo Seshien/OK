@@ -15,13 +15,25 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="TSP_v2.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="city.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="generator.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Tabo.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="genetic_alg.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="gene.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="main.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Greedy.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -30,6 +42,18 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="generator.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Tabo.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="genetic_alg.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="gene.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Greedy.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
