@@ -7,6 +7,8 @@
 #include <stdlib.h>
 #include "city.h"
 #include "generator.h"
+#include "genetic_alg.h"
+#include "Greedy.h"
 #include "Tabo.h"
 using namespace std;
 // meta-heurystyki
@@ -41,6 +43,16 @@ int read_file(string file_name, vector<City>& cities, int beginning = 0)
 	return amount;
 }
 
+void TSP_genetic(vector<City> &cities, int amount)
+{
+	double CROSSOVER_CHANCE = 95.0;
+	double MUTATE_CHANCE = 70.0;
+	int NUMBER_OF_GENES = 10;
+	int NUMBER_OF_GENERATIONS = 10;
+	int NUMBER_OF_ELITE = 2;
+	Genetic_alg algorytm(cities, amount, CROSSOVER_CHANCE, MUTATE_CHANCE, NUMBER_OF_GENES, NUMBER_OF_GENERATIONS, NUMBER_OF_ELITE);
+}
+
 int main()
 {
 	srand(time(0));
@@ -69,7 +81,9 @@ int main()
 	{
 		cities[i].print_city();
 	}
-	//TSP_greedy(cities, cities, amount);
+	Greedy greedy;
+	greedy.TSP_greedy(cities, cities, amount);
+	TSP_genetic(cities, amount);
 	Tabo tabo(cities, Tabo::Config());
 	tabo.printMatrix();
 	cin.sync();

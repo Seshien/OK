@@ -14,7 +14,7 @@ Greedy::~Greedy()
 
 double Greedy::find_shortest_dist(vector<City>& c_not_visited, City start, int& pos)
 {
-	double shortest_dist;
+	double shortest_dist = 0;
 	bool first_time_set = false;
 	int destination_pos = 0;
 	double temp;

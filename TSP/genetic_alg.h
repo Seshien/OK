@@ -30,7 +30,9 @@ public:
 	void rank_selection();
 	int select_parent_id(int sum_of_ranks);
 	Gene breeding(Gene parent_1, Gene parent_2);
-	void genes_mutation();
+	void genes_mutation(vector<City> &cities);
 	void replace_old();
+	void show_genes();
+	void show_next_genes();
 };
 
