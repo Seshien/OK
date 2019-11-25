@@ -12,7 +12,7 @@ void Tabo::FullAlgorithm()
 {
 	_bestResult = getFirstResult();
 	results.push_back(_bestResult);
-	while (1)
+	for (int j=0;j<_config.NUM_INTERATION;j++)
 	{
 		auto pathlist = createNeighb(_bestResult.path);
 		Result bestCandidate = getResult(pathlist[0]);
@@ -24,12 +24,20 @@ void Tabo::FullAlgorithm()
 		}
 		if (bestCandidate.value < _bestResult.value)
 			_bestResult = bestCandidate;
+		bestCandidate.isTabu = true;
 		results.push_back(bestCandidate);
 	}
-
+	showBest();
 	
 }
 
+void Tabo::showBest()
+{
+	std::cout << "Najlepsze rozwiazanie :" << getDistance(_bestResult.path) << std::endl;
+	for (auto city : _bestResult.path)
+		std::cout << ++city << " ";
+	std::cout << std::endl;
+}
 
 Tabo::Result Tabo::getResult(std::vector<int> & path)
 {
@@ -49,7 +57,8 @@ double Tabo::getValue(Result & res)
 	for (auto test : this->results)
 		if (test.path == res.path && test.isTabu)
 		{
-
+			test.isTabu = false;
+			value = value * 2;
 		}
 	return value;
 }
@@ -84,7 +93,7 @@ void Tabo::fillMatrix(std::vector<City> & cities)
 	for (int i = 0; i < cities.size(); i++)
 	{
 		this->distmatrix.push_back(std::vector<double>());
-		for (int j = i + 1; j < cities.size(); j++)
+		for (int j = 0; j < cities.size(); j++)
 		{
 			distmatrix[i].push_back(cities[i].distance_between(cities[j]));
 		}
@@ -95,6 +104,8 @@ Tabo::Result Tabo::getFirstResult()
 {
 	Result res;
 	res.path = Greedy().TSP_greedy(cities, cities);
+	for (auto & p : res.path)
+		--p;
 	res.value = getDistance(res.path);
 	res.isTabu = true;
 	res.time = _config.PENAL_LONG_TERM;
@@ -123,6 +134,7 @@ void Tabo::fillMatrix()
 			distmatrix[i].push_back(cities[i].distance_between(cities[j]));
 		}
 	}
+
 }
 void Tabo::printMatrix()
 {

@@ -28,6 +28,8 @@ public:
 	void FullAlgorithm();
 
 	void printMatrix();
+
+	void showBest();
 private:
 
 
