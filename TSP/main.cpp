@@ -83,11 +83,12 @@ int main()
 	}
 	Greedy greedy;
 
-	TSP_genetic(cities, amount);
+	//TSP_genetic(cities, amount);
 	Tabo tabo(cities, Tabo::Config());
 	greedy.TSP_greedy(cities, cities);
 	tabo.FullAlgorithm();
 	tabo.showBest();
+	cout << "xd " << endl;
 	//tabo.printMatrix();
 	cin.sync();
 	cin.get();
