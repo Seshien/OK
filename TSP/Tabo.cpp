@@ -38,6 +38,7 @@ Tabo::Result Tabo::getResult(std::vector<int> & path)
 	res.isTabu = false;
 	res.time = _config.LONG_TERM_LENGTH;
 	res.value = getValue(res);
+	return res;
 }
 
 double Tabo::getValue(Result & res)

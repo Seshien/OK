@@ -1,68 +1,68 @@
 #include "gene.h"
 
 Gene::Gene(vector<int> road, vector<City> &cities) {
-	Gene::road = road;
-	Gene::calculate_distance(cities);
-	Gene::calculate_fitness();
+	this->road = road;
+	this->calculate_distance(cities);
+	this->calculate_fitness();
 }
 void Gene::calculate_fitness() {
-	Gene::fitness = 1/Gene::distance;
+	this->fitness = 1 / this->distance;
 	//cout << "Fitness: " << Gene::fitness << endl;
 }
 
 void Gene::set_road(vector<int> road) {
-	Gene::road = road;
+	this->road = road;
 }
 
 void Gene::set_rank(int rank) {
-	Gene::rank = rank;
+	this->rank = rank;
 }
 
 void Gene::calculate_distance(vector <City> &cities) {
 	double distance = 0;
-	for (int i = 0; i < Gene::road.size() - 1; i++) {
-		distance += cities[Gene::road[i]-1].distance_between(cities[Gene::road[i + 1]-1]);
+	for (int i = 0; i < road.size() - 1; i++) {
+		distance += cities[road[i]-1].distance_between(cities[road[i + 1]-1]);
 	}
-	distance += cities[Gene::road[Gene::road.size() - 1]-1].distance_between(cities[Gene::road[0]-1]);
-	cout << "Dystans przed: " << Gene::distance << endl;
-	Gene::distance = distance;
-	cout << "Dysntans po: " << Gene::distance << endl;
+	distance += cities[road[road.size() - 1]-1].distance_between(cities[road[0]-1]);
+	cout << "Dystans przed: " << this->distance << endl;
+	this->distance = distance;
+	cout << "Dysntans po: " << this->distance << endl;
 }
 double Gene::get_fitness() {
-	return Gene::fitness;
+	return this->fitness;
 }
 
 double Gene::get_distance() {
-	return Gene::distance;
+	return this->distance;
 }
 
 int Gene::get_rank() {
-	return Gene::rank;
+	return this->rank;
 }
 
 vector<int> Gene::get_road() {
-	return Gene::road;
+	return this->road;
 }
 
 void Gene::mutate(double mutate_chance, int amount_of_cities, vector<City> &cities) {
 	int random_number;
-	for (int i = 0; i < Gene::road.size(); i++)
+	for (int i = 0; i < this->road.size(); i++)
 	{
 		random_number = rand() % 100;
 		if (int(mutate_chance) > random_number)
 		{
 			random_number = rand() % amount_of_cities;
-			swap(Gene::road[i], Gene::road[random_number]);
+			swap(this->road[i], this->road[random_number]);
 		}
 	}
 	//cout << Gene::get_distance() << endl;
-	Gene::calculate_distance(cities);
+	this->calculate_distance(cities);
 	//cout << Gene::get_distance() << endl;
-	Gene::calculate_fitness();
+	this->calculate_fitness();
 }
 
 bool Gene::operator < (Gene& other)
 {
-	return (Gene::fitness < other.fitness);
+	return (this->fitness < other.fitness);
 }
 

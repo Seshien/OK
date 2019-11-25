@@ -82,10 +82,10 @@ int main()
 		cities[i].print_city();
 	}
 	Greedy greedy;
-	greedy.TSP_greedy(cities, cities, amount);
+	//greedy.TSP_greedy(cities, cities);
 	TSP_genetic(cities, amount);
-	Tabo tabo(cities, Tabo::Config());
-	tabo.printMatrix();
+	//Tabo tabo(cities, Tabo::Config());
+	//tabo.printMatrix();
 	cin.sync();
 	cin.get();
 	return 0;
