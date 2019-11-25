@@ -35,7 +35,7 @@ double Greedy::find_shortest_dist(vector<City>& c_not_visited, City start, int& 
 	return shortest_dist;
 }
 
-void Greedy::TSP_greedy(vector<City> cities_copy, vector<City>& cities, int amount) {
+std::vector<int> Greedy::TSP_greedy(vector<City> cities_copy, vector<City>& cities) {
 	double road_length = 0;
 	int next_pos;
 	vector<int> road_by_id;
@@ -65,4 +65,5 @@ void Greedy::TSP_greedy(vector<City> cities_copy, vector<City>& cities, int amou
 		cout << road_by_id[i] << " ";
 	}
 	cout << endl;
+	return road_by_id;
 }
