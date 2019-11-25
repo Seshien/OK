@@ -24,7 +24,9 @@ void Gene::calculate_distance(vector <City> &cities) {
 		distance += cities[Gene::road[i]-1].distance_between(cities[Gene::road[i + 1]-1]);
 	}
 	distance += cities[Gene::road[Gene::road.size() - 1]-1].distance_between(cities[Gene::road[0]-1]);
+	cout << "Dystans przed: " << Gene::distance << endl;
 	Gene::distance = distance;
+	cout << "Dysntans po: " << Gene::distance << endl;
 }
 double Gene::get_fitness() {
 	return Gene::fitness;
@@ -42,7 +44,7 @@ vector<int> Gene::get_road() {
 	return Gene::road;
 }
 
-void Gene::mutate(double mutate_chance, int amount_of_cities) {
+void Gene::mutate(double mutate_chance, int amount_of_cities, vector<City> &cities) {
 	int random_number;
 	for (int i = 0; i < Gene::road.size(); i++)
 	{
@@ -53,6 +55,10 @@ void Gene::mutate(double mutate_chance, int amount_of_cities) {
 			swap(Gene::road[i], Gene::road[random_number]);
 		}
 	}
+	//cout << Gene::get_distance() << endl;
+	Gene::calculate_distance(cities);
+	//cout << Gene::get_distance() << endl;
+	Gene::calculate_fitness();
 }
 
 bool Gene::operator < (Gene& other)

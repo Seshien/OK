@@ -13,6 +13,7 @@ Genetic_alg::Genetic_alg(vector<City> cities, int amount_of_c, double crossover,
 }
 
 void Genetic_alg::start_algorithm() {
+	cout << "ALGORYTM GENETYCZNY BEGIN" << endl;
 	Genetic_alg::new_population();
 	sort(Genetic_alg::genes.begin(), Genetic_alg::genes.end());
 	cout << "Pokolenie poczatkowe: " << endl;
@@ -20,14 +21,18 @@ void Genetic_alg::start_algorithm() {
 	for (int i = 0; i < Genetic_alg::numer_of_generations; i++)
 	{
 		// Rank selection sam w sobie wywoluje crossovery pod koniec
+		Genetic_alg::show_genes();
 		Genetic_alg::give_ranks();
 		Genetic_alg::rank_selection();
-		Genetic_alg::genes_mutation();
+		Genetic_alg::show_next_genes();
+		Genetic_alg::genes_mutation(cities);
+		Genetic_alg::show_next_genes();
 		Genetic_alg::replace_old();
 		sort(Genetic_alg::genes.begin(), Genetic_alg::genes.end());
 		cout << "Pokolenie: " << i << endl;
 		cout << "D³ugoœæ drogi: " << Genetic_alg::genes[Genetic_alg::genes.size() - 1].get_distance() << endl;
 	}
+	cout << "ALGORYTM GENETYCZNY END" << endl;
 }
 
 // WORKS
@@ -136,10 +141,10 @@ Gene Genetic_alg::breeding(Gene parent_1, Gene parent_2) {
 	return Gene(road, Genetic_alg::cities);
 }
 
-void Genetic_alg::genes_mutation() {
+void Genetic_alg::genes_mutation(vector<City> &cities) {
 	for (int i = 0; i < Genetic_alg::next_gen.size(); i++)
 	{
-		Genetic_alg::next_gen[i].mutate(Genetic_alg::mutate_chance, Genetic_alg::amount_of_cities);
+		Genetic_alg::next_gen[i].mutate(Genetic_alg::mutate_chance, Genetic_alg::amount_of_cities, cities);
 	}
 }
 
@@ -150,4 +155,28 @@ void Genetic_alg::replace_old() {
 		Genetic_alg::genes[i] = Genetic_alg::next_gen[i];
 	}
 	Genetic_alg::next_gen.clear();
+}
+
+void Genetic_alg::show_genes()
+{
+	cout << "GENES: " << endl;
+	for (int i = 0; i < Genetic_alg::genes.size(); i++)
+	{
+		for(int j = 0; j < Genetic_alg::genes[i].get_road().size(); j++)
+			cout << Genetic_alg::genes[i].get_road()[j] << " ";
+		cout << Genetic_alg::genes[i].get_distance() << endl;
+	}
+	cout << "=======" << endl;
+}
+
+void Genetic_alg::show_next_genes()
+{
+	cout << "NEXT GENES: " << endl;
+	for (int i = 0; i < Genetic_alg::next_gen.size(); i++)
+	{
+		for (int j = 0; j < Genetic_alg::next_gen[i].get_road().size(); j++)
+			cout << Genetic_alg::next_gen[i].get_road()[j] << " ";
+		cout << Genetic_alg::genes[i].get_distance() << endl;
+	}
+	cout << "=======" << endl;
 }

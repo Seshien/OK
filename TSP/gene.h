@@ -25,7 +25,7 @@ public:
 	double get_distance();
 	int get_rank();
 	vector<int> get_road();
-	void mutate(double mutate_chance, int amount_of_cities);
+	void mutate(double mutate_chance, int amount_of_cities, vector<City> &cities);
 	bool operator <(Gene& other);
 };
 
