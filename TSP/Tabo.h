@@ -8,17 +8,19 @@ public:
 	struct Result
 	{
 		std::vector<int> path;
-		bool isTabu;
-		int time;
-		double value;
-		double dist;
+		bool isTabu = false;
+		int time = -1;
+		double value = 0;
+		double dist = 0;
 	};
 
 	struct Config
 	{
-		int Neigh_size = 10;
+		int Neigh_size = 30;
 		int NUM_INTERATION = 1000;
 		int PENAL_LONG_TERM = 10;
+
+
 		int LONG_TERM_LENGTH = 100;
 		int TIME_TRY = 500;
 	};
@@ -33,7 +35,7 @@ public:
 	void showBest();
 private:
 
-
+	int iteration;
 	Config _config;
 	Result _bestResult;
 	std::vector<Result> results;
@@ -46,6 +48,8 @@ private:
 	Tabo::Result getResult(std::vector<int> & path);
 	double getDistance(std::vector<int> path);
 
+	void showResult(Result res);
+	void showIteration(Result res);
 
 	std::vector<vector<int>> createNeighb(std::vector<int> & path);
 	std::vector<int> ShufflePath(std::vector<int> path);

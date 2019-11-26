@@ -16,15 +16,20 @@ using namespace std;
 // mmachowiak/instances
 // mmachowiak/ok
 
-int read_file(string file_name, vector<City>& cities, int beginning = 0)
+int read_file( vector<City>& cities, int beginning = 0)
 {
+	string file_name;
+	std::cout << "Podaj nazwe pliku: ";
+	std::cin >> file_name;
 	ifstream my_file;
 	int amount;
 	int* tmp = new int[3];
 	int index = 0;
 	my_file.open(file_name.c_str());
-	if (my_file.is_open() == false) {
-		cout << "Problem otwarcia pliku!" << endl;
+	if (my_file.is_open() == false) 
+	{
+		std::cout << "Problem otwarcia pliku!" << endl;
+		return -1;
 	}
 	my_file >> amount;
 	while (!my_file.eof()) {
@@ -58,37 +63,98 @@ int main()
 	srand(time(0));
 	string file_name;
 	vector<City> cities;
+	Greedy greedy;
+	Tabo::Config config;
 	int amount;
-	int choice;
-	cout << "1) Z pliku, 2) Generuj: ";
-	cin >> choice;
-	if (choice == 1) {
-		cout << "Podaj nazwe pliku: ";
-		cin >> file_name;
-		amount = read_file(file_name, cities);
-	}
-	else {
-		cout << "Podaj ilosc wierzcholkow: ";
-		cin >> amount;
-		cities = generate_cities(amount);
-		if (cities.size() == 0)
+	//int choice;
+	char choice='o';
+	while (choice != 'e')
+	{
+		while (cities.empty())
 		{
-			exit(0);
+			std::cout << "Musisz utworzyc graf na ktorym chcesz pracowac. Wybierz sposob utworzenia:" << std::endl;
+			std::cout << "Generator[g], plik[p], konsola[k]." << std::endl;
+			std::cin >> choice;
+			switch (choice)
+			{
+			case 'g':
+				cout << "Podaj ilosc wierzcholkow: ";
+				std::cin >> amount;
+				cities = generate_cities(amount);
+				break;
+			case 'p':
+
+				if ((amount = read_file(cities)) != -1)
+					std::cout << "Wczytywanie udane." << std::endl;
+				else
+				{
+					std::cout << "Wystapil blad, graf nie zostal wczytany." << std::endl;
+					cities.clear();
+					std::cin.clear();
+				}
+				break;
+			case 'k':
+				if (1 == 0)
+					std::cout << "Wczytywanie udane." << std::endl;
+				else
+				{
+					std::cout << "Wystapil blad, graf nie zostal wczytany." << std::endl;
+					std::cin.clear();
+				}
+				break;
+			default:
+				std::cout << "Komenda nie rozpoznana." << std::endl;
+				std::cin.clear();
+				break;
+			}
+			std::cout << "<-------------------------------------------------------------->" << std::endl;
+		}
+
+		//TSP_genetic(cities, amount);
+		//tabo.printMatrix();
+		std::cin.sync();
+		std::cin.get();
+		Tabo tabo(cities, config);
+		while (!cities.empty())
+		{
+			std::cout << "<-------------------------------------------------------------->" << std::endl;
+			std::cout << "Graf istnieje. Wybierz czynnosc z listy." << std::endl;
+			std::cout << "<-------------------------------------------------------------->" << std::endl;
+			std::cout << "Pokaz liste miast[s]. Odpal algorytm[g]. Pokaz wynik[w]. " << std::endl;
+			std::cout << "Zmien config[c]. Usun graf[u]. Wyjdz z programu[e]." << std::endl;
+			std::cout << "<-------------------------------------------------------------->" << std::endl;
+			std::cin >> choice;
+			switch (choice)
+			{
+			case 's':
+				cout << "Ilosc miast: " << amount << endl;
+				for (int i = 0; i < amount; i++)
+				{
+					cities[i].print_city();
+				}
+				break;
+			case 'g':
+				tabo.FullAlgorithm();
+				break;
+			case 'c':
+				std::cout << "Work in Progress" << std::endl;
+				break;
+			case 'e':
+				std::cout << "Wychodzenie z programu." << std::endl;
+				break;
+			case 'u':
+				std::cout << "Usuwanie grafu." << std::endl;
+				cities.clear();
+				break;
+			case 'w':
+				tabo.showBest();
+				break;
+			default:
+				std::cout << "Komenda nie rozpoznana." << std::endl;
+			}
+			std::cout << "<-------------------------------------------------------------->" << std::endl;
 		}
 	}
-	cout << "Ilosc miast: " << amount << endl;
-	for (int i = 0; i < amount; i++)
-	{
-		cities[i].print_city();
-	}
-	Greedy greedy;
 
-	//TSP_genetic(cities, amount);
-	Tabo tabo(cities, Tabo::Config());
-	tabo.FullAlgorithm();
-	tabo.showBest();
-	//tabo.printMatrix();
-	cin.sync();
-	cin.get();
 	return 0;
 }

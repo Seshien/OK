@@ -12,32 +12,53 @@ void Tabo::FullAlgorithm()
 {
 	_bestResult = getFirstResult();
 	results.push_back(_bestResult);
-	for (int j=0;j<_config.NUM_INTERATION;j++)
+	for (iteration = 0; iteration < _config.NUM_INTERATION; iteration++)
 	{
 		auto pathlist = createNeighb(_bestResult.path);
 		Result bestCandidate = getResult(pathlist[0]);
 		for (int i = 1; i < pathlist.size(); i++)
 		{
-			Result candidate = getResult(pathlist[1]);
+			Result candidate = getResult(pathlist[i]);
 			if (candidate.value < bestCandidate.value)
 				bestCandidate = candidate;
 		}
-		if (bestCandidate.value < _bestResult.value)
+
+		showIteration(bestCandidate);
+		if (bestCandidate.dist < _bestResult.dist)
+		{
 			_bestResult = bestCandidate;
-		bestCandidate.isTabu = true;
-		results.push_back(bestCandidate);
+			std::cout << "Znaleziona lepsza wartosc" << std::endl;
+		}
+		if (!bestCandidate.isTabu)
+		{
+			bestCandidate.isTabu = true;
+			results.push_back(bestCandidate);
+		}
+
 	}
 	showBest();
 	
 }
-
+void Tabo::showIteration(Result res)
+{
+	std::cout << "Iteracja: " << iteration << std::endl;
+	showResult(res);
+}
 void Tabo::showBest()
 {
-	std::cout << "Najlepsze rozwiazanie :" << getDistance(_bestResult.path) << std::endl;
+	if (_bestResult.path.empty())
+		return;
+	showResult(_bestResult);
 	for (auto city : _bestResult.path)
 		std::cout << ++city << " ";
 	std::cout << std::endl;
 }
+void Tabo::showResult(Result res)
+{
+	std::cout << "Odleglosc: " << res.dist << " Wartosc: " << res.value << std::endl;
+
+}
+
 
 Tabo::Result Tabo::getResult(std::vector<int> & path)
 {
@@ -55,9 +76,10 @@ double Tabo::getValue(Result & res)
 	double value = 0;
 	value += getDistance(res.path);
 	value += res.time;
-	for (auto test : this->results)
+	for (auto & test : this->results)
 		if (test.path == res.path)
 		{
+			res.isTabu = true;
 			test.time += 20;
 			if (test.isTabu)
 			{
@@ -65,6 +87,7 @@ double Tabo::getValue(Result & res)
 				value = value * 2;
 			}
 
+			return value;
 		}
 	return value;
 }
