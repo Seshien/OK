@@ -1,6 +1,7 @@
 #include "gene.h"
 
 Gene::Gene(vector<int> road, vector<City> &cities) {
+	this->distance = 0;
 	this->road = road;
 	this->calculate_distance(cities);
 	this->calculate_fitness();
@@ -19,14 +20,14 @@ void Gene::set_rank(int rank) {
 }
 
 void Gene::calculate_distance(vector <City> &cities) {
-	double distance = 0;
+	double dist = 0;
 	for (int i = 0; i < road.size() - 1; i++) {
-		distance += cities[road[i]-1].distance_between(cities[road[i + 1]-1]);
+		dist += cities[road[i]-1].distance_between(cities[road[i + 1]-1]);
 	}
-	distance += cities[road[road.size() - 1]-1].distance_between(cities[road[0]-1]);
-	cout << "Dystans przed: " << this->distance << endl;
-	this->distance = distance;
-	cout << "Dysntans po: " << this->distance << endl;
+	dist += cities[road[road.size() - 1]-1].distance_between(cities[road[0]-1]);
+	//cout << "Dystans przed: " << this->distance << endl;
+	this->distance = dist;
+	//cout << "Dysntans po: " << this->distance << endl;
 }
 double Gene::get_fitness() {
 	return this->fitness;

@@ -46,6 +46,7 @@ Tabo::Result Tabo::getResult(std::vector<int> & path)
 	res.isTabu = false;
 	res.time = _config.LONG_TERM_LENGTH;
 	res.value = getValue(res);
+	res.dist = getDistance(res.path);
 	return res;
 }
 
@@ -107,6 +108,7 @@ Tabo::Result Tabo::getFirstResult()
 	for (auto & p : res.path)
 		--p;
 	res.value = getDistance(res.path);
+	res.dist = res.value;
 	res.isTabu = true;
 	res.time = _config.PENAL_LONG_TERM;
 	return res;

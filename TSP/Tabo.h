@@ -11,12 +11,13 @@ public:
 		bool isTabu;
 		int time;
 		double value;
+		double dist;
 	};
 
 	struct Config
 	{
 		int Neigh_size = 10;
-		int NUM_INTERATION = 3000;
+		int NUM_INTERATION = 1000;
 		int PENAL_LONG_TERM = 10;
 		int LONG_TERM_LENGTH = 100;
 		int TIME_TRY = 500;

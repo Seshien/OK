@@ -2,14 +2,14 @@
 
 Genetic_alg::Genetic_alg(vector<City> cities, int amount_of_c, double crossover, double mutate, int n_of_genes, int n_of_generations, int elite)
 {
-	Genetic_alg::cities = cities;
-	Genetic_alg::amount_of_cities = amount_of_c;
-	Genetic_alg::crossover_chance = crossover;
-	Genetic_alg::mutate_chance = mutate;
-	Genetic_alg::number_of_genes = n_of_genes;
-	Genetic_alg::numer_of_generations = n_of_generations;
-	Genetic_alg::number_of_elite_genes = elite;
-	Genetic_alg::start_algorithm();
+	this->cities = cities;
+	this->amount_of_cities = amount_of_c;
+	this->crossover_chance = crossover;
+	this->mutate_chance = mutate;
+	this->number_of_genes = n_of_genes;
+	this->numer_of_generations = n_of_generations;
+	this->number_of_elite_genes = elite;
+	this->start_algorithm();
 }
 
 void Genetic_alg::start_algorithm() {
@@ -21,12 +21,12 @@ void Genetic_alg::start_algorithm() {
 	for (int i = 0; i < Genetic_alg::numer_of_generations; i++)
 	{
 		// Rank selection sam w sobie wywoluje crossovery pod koniec
-		Genetic_alg::show_genes();
+		//Genetic_alg::show_genes();
 		Genetic_alg::give_ranks();
 		Genetic_alg::rank_selection();
-		Genetic_alg::show_next_genes();
+		//Genetic_alg::show_next_genes();
 		Genetic_alg::genes_mutation(cities);
-		Genetic_alg::show_next_genes();
+		//Genetic_alg::show_next_genes();
 		Genetic_alg::replace_old();
 		sort(Genetic_alg::genes.begin(), Genetic_alg::genes.end());
 		cout << "Pokolenie: " << i << endl;
@@ -52,7 +52,7 @@ void Genetic_alg::new_population() {
 			int random_number = rand() % amount_of_cities;
 			swap(copy_temporary[j], copy_temporary[random_number]);
 		}
-		Genetic_alg::genes.push_back(Gene(copy_temporary, Genetic_alg::cities));
+		Genetic_alg::genes.push_back(Gene(copy_temporary, this->cities));
 	}
 }
 
@@ -176,7 +176,7 @@ void Genetic_alg::show_next_genes()
 	{
 		for (int j = 0; j < Genetic_alg::next_gen[i].get_road().size(); j++)
 			cout << Genetic_alg::next_gen[i].get_road()[j] << " ";
-		cout << Genetic_alg::genes[i].get_distance() << endl;
+		cout << Genetic_alg::next_gen[i].get_distance() << endl;
 	}
 	cout << "=======" << endl;
 }
