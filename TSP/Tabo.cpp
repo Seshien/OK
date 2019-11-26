@@ -56,10 +56,15 @@ double Tabo::getValue(Result & res)
 	value += getDistance(res.path);
 	value += res.time;
 	for (auto test : this->results)
-		if (test.path == res.path && test.isTabu)
+		if (test.path == res.path)
 		{
-			test.isTabu = false;
-			value = value * 2;
+			test.time += 20;
+			if (test.isTabu)
+			{
+				test.isTabu = false;
+				value = value * 2;
+			}
+
 		}
 	return value;
 }

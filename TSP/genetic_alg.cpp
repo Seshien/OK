@@ -43,6 +43,7 @@ void Genetic_alg::new_population() {
 	{
 		temporary.push_back(i);
 	}
+	//temporary = Greedy().TSP_greedy(cities, cities);
 	for (int i = 0; i < Genetic_alg::number_of_genes; i++)
 	{
 		// Kopia uporz¹dkowanego wektora

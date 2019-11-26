@@ -1,9 +1,10 @@
 #pragma once
-#include <iostream>;
-#include <vector>;
+#include <iostream>
+#include <vector>
 #include <algorithm>
-#include "gene.h";
-#include "city.h";
+#include "gene.h"
+#include "city.h"
+#include "Greedy.h"
 
 using namespace std;
 
