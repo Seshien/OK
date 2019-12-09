@@ -12,26 +12,26 @@ void Tabo::FullAlgorithm()
 {
 	_bestResult = getFirstResult();
 	results.push_back(_bestResult);
-	for (iteration = 0; iteration < _config.NUM_INTERATION; iteration++)
+	for (iteration = 0; iteration < _config.Iteration_Amount; iteration++)
 	{
-		auto pathlist = createNeighb(_bestResult.path);
-		Result bestCandidate = getResult(pathlist[0]);
+		auto pathlist = createNeighb(_bestResult.path); //tworzy neighbourhood
+		Result bestCandidate = getResult(pathlist[0]); //tworzy result z pierwszego patha
 		for (int i = 1; i < pathlist.size(); i++)
 		{
-			Result candidate = getResult(pathlist[i]);
-			if (candidate.value < bestCandidate.value)
+			Result candidate = getResult(pathlist[i]); //tworzy result z kolejnego patha
+			if (candidate.value < bestCandidate.value) //sprawdza czy wartosc resulta jest dotychczasowo najlepsza
 				bestCandidate = candidate;
 		}
 
-		showIteration(bestCandidate);
-		if (bestCandidate.dist < _bestResult.dist)
+		//showIteration(bestCandidate);
+		if (bestCandidate.dist < _bestResult.dist) //sprawdza czy najlepszy wynik (value) z neigh, jest krotszy od tychczasowego najlepszego wyniku.
 		{
 			_bestResult = bestCandidate;
 			std::cout << "Znaleziona lepsza wartosc" << std::endl;
 		}
-		if (!bestCandidate.isTabu)
+		if (!bestCandidate.isTabu) //Jezeli bestCandidate.isTabu, to znaczy ze result juz istnieje i go nie dodajemy.
 		{
-			bestCandidate.isTabu = true;
+			bestCandidate.isTabu = false;
 			results.push_back(bestCandidate);
 		}
 
@@ -39,11 +39,13 @@ void Tabo::FullAlgorithm()
 	showBest();
 	
 }
+
 void Tabo::showIteration(Result res)
 {
 	std::cout << "Iteracja: " << iteration << std::endl;
 	showResult(res);
 }
+
 void Tabo::showBest()
 {
 	if (_bestResult.path.empty())
@@ -53,9 +55,21 @@ void Tabo::showBest()
 		std::cout << ++city << " ";
 	std::cout << std::endl;
 }
-void Tabo::showResult(Result res)
+
+pair<double, double> Tabo::returnBest()
+{
+	return pair<double, double>(_bestResult.dist, _bestResult.value);
+}
+
+Tabo::Config Tabo::returnConfig()
+{
+	return this->_config;
+}
+
+pair<double, double> Tabo::showResult(Result res)
 {
 	std::cout << "Odleglosc: " << res.dist << " Wartosc: " << res.value << std::endl;
+	return pair<double,double>(res.dist, res.value);
 
 }
 
@@ -65,7 +79,7 @@ Tabo::Result Tabo::getResult(std::vector<int> & path)
 	Result res;
 	res.path = path;
 	res.isTabu = false;
-	res.time = _config.LONG_TERM_LENGTH;
+	res.time = 0;
 	res.value = getValue(res);
 	res.dist = getDistance(res.path);
 	return res;
@@ -80,13 +94,14 @@ double Tabo::getValue(Result & res)
 		if (test.path == res.path)
 		{
 			res.isTabu = true;
-			test.time += 20;
+			test.time += _config.PENAL_LONG_TERM;
 			if (test.isTabu)
 			{
 				test.isTabu = false;
-				value = value * 2;
+				value = value + value / 10;
 			}
-
+			else
+				test.isTabu = true;
 			return value;
 		}
 	return value;
@@ -95,7 +110,7 @@ double Tabo::getValue(Result & res)
 std::vector<vector<int>> Tabo::createNeighb(std::vector<int> & path)
 {
 	std::vector<vector<int>> neigh;
-	for (int i = 0; i < this->_config.Neigh_size; i++)
+	for (int i = 0; i < this->_config.Neigh_Size; i++)
 	{
 		neigh.push_back(ShufflePath(path));
 	}

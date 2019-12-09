@@ -15,10 +15,25 @@ using namespace std;
 // Instancje EUC_2D
 // mmachowiak/instances
 // mmachowiak/ok
-
-int read_file( vector<City>& cities, int beginning = 0)
+void saveToFile(Tabo tabo, std::string file_name="default")
 {
-	string file_name;
+	if (file_name == "default")
+	{
+		std::cout << "Podaj nazwe pliku: ";
+		std::cin >> file_name;
+	}
+
+	ofstream my_file;
+	file_name = "wynik_" + file_name;
+	my_file.open(file_name.c_str(), ios::app);
+	pair<double, double> result = tabo.returnBest();
+	Tabo::Config config = tabo.returnConfig();
+	my_file << config.Neigh_size << ":" << config.NUM_INTERATION << ":" << config.PENAL_LONG_TERM << std::endl;
+	my_file << result.first << ":" << result.second << std::endl;
+	my_file.close();
+}
+int read_file( vector<City>& cities, std::string & file_name, int beginning = 0)
+{
 	std::cout << "Podaj nazwe pliku: ";
 	std::cin >> file_name;
 	ifstream my_file;
@@ -61,7 +76,7 @@ void TSP_genetic(vector<City> &cities, int amount)
 int main()
 {
 	srand(time(0));
-	string file_name;
+	std::string file_name = "default";
 	vector<City> cities;
 	Greedy greedy;
 	Tabo::Config config;
@@ -84,7 +99,7 @@ int main()
 				break;
 			case 'p':
 
-				if ((amount = read_file(cities)) != -1)
+				if ((amount = read_file(cities, file_name)) != -1)
 					std::cout << "Wczytywanie udane." << std::endl;
 				else
 				{
@@ -133,6 +148,9 @@ int main()
 					cities[i].print_city();
 				}
 				break;
+			case 'f':
+				saveToFile(tabo, file_name);
+				break;
 			case 'g':
 				tabo.FullAlgorithm();
 				break;
@@ -141,6 +159,7 @@ int main()
 				break;
 			case 'e':
 				std::cout << "Wychodzenie z programu." << std::endl;
+				cities.clear();
 				break;
 			case 'u':
 				std::cout << "Usuwanie grafu." << std::endl;

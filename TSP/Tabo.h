@@ -16,12 +16,12 @@ public:
 
 	struct Config
 	{
-		int Neigh_size = 30;
-		int NUM_INTERATION = 1000;
+		int Neigh_Size = 40;
+		int Iteration_Amount = 2000;
 		int PENAL_LONG_TERM = 10;
 
-
-		int LONG_TERM_LENGTH = 100;
+		
+		int Max_Result = 100;
 		int TIME_TRY = 500;
 	};
 
@@ -33,6 +33,9 @@ public:
 	void printMatrix();
 
 	void showBest();
+	pair<double, double> returnBest();
+	Config returnConfig();
+
 private:
 
 	int iteration;
@@ -48,7 +51,7 @@ private:
 	Tabo::Result getResult(std::vector<int> & path);
 	double getDistance(std::vector<int> path);
 
-	void showResult(Result res);
+	pair<double, double> showResult(Result res);
 	void showIteration(Result res);
 
 	std::vector<vector<int>> createNeighb(std::vector<int> & path);
