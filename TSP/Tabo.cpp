@@ -7,6 +7,7 @@ Tabo::Tabo(std::vector<City> & cities, Config config)
 	this->_config = config;
 	this->cities = cities;
 	this->fillMatrix(cities);
+	this->iterImprovement = 0;
 }
 void Tabo::FullAlgorithm()
 {
@@ -14,21 +15,26 @@ void Tabo::FullAlgorithm()
 	results.push_back(_bestResult);
 	for (iteration = 0; iteration < _config.Iteration_Amount; iteration++)
 	{
-		auto pathlist = createNeighb(_bestResult.path); //tworzy neighbourhood
-		Result bestCandidate = getResult(pathlist[0]); //tworzy result z pierwszego patha
-		for (int i = 1; i < pathlist.size(); i++)
+		auto neigh = createNeighb(_bestResult.path); //tworzy neighbourhood
+		Result bestCandidate = neigh[0]; //tworzy result z pierwszego patha
+		double neighvalue = bestCandidate.value;
+		for (int i = 1; i < neigh.size(); i++)
 		{
-			Result candidate = getResult(pathlist[i]); //tworzy result z kolejnego patha
-			if (candidate.value < bestCandidate.value) //sprawdza czy wartosc resulta jest dotychczasowo najlepsza
-				bestCandidate = candidate;
+			neighvalue += neigh[i].value;
+			if (neigh[i].value < bestCandidate.value) //sprawdza czy wartosc resulta jest dotychczasowo najlepsza
+				bestCandidate = neigh[i];
 		}
-
-		//showIteration(bestCandidate);
+		neighvalue /= neigh.size();
+		this->neighvalues.push_back(neighvalue);
+		showIteration(bestCandidate);
 		if (bestCandidate.dist < _bestResult.dist) //sprawdza czy najlepszy wynik (value) z neigh, jest krotszy od tychczasowego najlepszego wyniku.
 		{
+			iterImprovement = 0;
 			_bestResult = bestCandidate;
 			std::cout << "Znaleziona lepsza wartosc" << std::endl;
 		}
+		else
+			iterImprovement++;
 
 
 		if (!bestCandidate.isTabu) //Jezeli bestCandidate.isTabu, to znaczy ze result juz istnieje i go nie dodajemy.
@@ -39,7 +45,8 @@ void Tabo::FullAlgorithm()
 
 		if (results.size() > _config.Max_Result)
 			results.erase(results.begin());
-
+		if (iterImprovement > _config.TIME_TRY)
+			break;
 	}
 	showBest();
 	
@@ -47,7 +54,7 @@ void Tabo::FullAlgorithm()
 
 void Tabo::showIteration(Result res)
 {
-	std::cout << "Iteracja: " << iteration << std::endl;
+	std::cout << "Iteracja: " << iteration <<" Srednia wartosc neighbourhood: "<< neighvalues.back() << std::endl;
 	showResult(res);
 }
 
@@ -73,13 +80,13 @@ Tabo::Config Tabo::returnConfig()
 
 pair<double, double> Tabo::showResult(Result res)
 {
-	std::cout << "Odleglosc: " << res.dist << " Wartosc: " << res.value << std::endl;
+	std::cout << "Odleglosc: " << res.dist << " Wartosc: " << res.value << " Zamienione: " << res.changed.first << ":" << res.changed.second << std::endl;
 	return pair<double,double>(res.dist, res.value);
 
 }
 
 
-Tabo::Result Tabo::getResult(std::vector<int> & path)
+Tabo::Result Tabo::getResult(std::vector<int> & path, std::pair<int, int> changed)
 {
 	Result res;
 	res.path = path;
@@ -87,6 +94,7 @@ Tabo::Result Tabo::getResult(std::vector<int> & path)
 	res.time = 0;
 	res.value = getValue(res);
 	res.dist = getDistance(res.path);
+	res.changed = changed;
 	return res;
 }
 
@@ -102,9 +110,9 @@ double Tabo::getValue(Result & res)
 		{
 			res.isTabu = true;
 			test.time += _config.PENAL_LONG_TERM;
+			value += test.time;
 			if (test.isTabu)
 			{
-				test.isTabu = false;
 				value = value + value / 10;
 			}
 			else
@@ -116,16 +124,18 @@ double Tabo::getValue(Result & res)
 	return value;
 }
 
-std::vector<vector<int>> Tabo::createNeighb(std::vector<int> & path)
+std::vector<Tabo::Result> Tabo::createNeighb(std::vector<int> & path)
 {
-	std::vector<vector<int>> neigh;
+	std::vector<Tabo::Result> neigh;
 	for (int i = 0; i < this->_config.Neigh_Size; i++)
 	{
-		neigh.push_back(ShufflePath(path));
+		std::pair<int, int> changed = { -1,-1 };
+		auto shuffled = ShufflePath(path, changed);
+		neigh.push_back(getResult(shuffled, changed));
 	}
 	return neigh;
 }
-std::vector<int> Tabo::ShufflePath(std::vector<int> path)
+std::vector<int> Tabo::ShufflePath(std::vector<int> path, pair<int,int> & changed)
 {
 	int a=0, b=0;
 	while (a == b)
@@ -133,6 +143,8 @@ std::vector<int> Tabo::ShufflePath(std::vector<int> path)
 		a = rand() % path.size();
 		b = rand() % path.size();
 	}
+	changed.first = a;
+	changed.second = b;
 	int temp = path[a];
 	path[a] = path[b];
 	path[b] = temp;
