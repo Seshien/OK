@@ -19,10 +19,10 @@ public:
 	{
 		int Neigh_Size = 50;
 		int Iteration_Amount = 10000;
-		int PENAL_LONG_TERM = 10;
+		int PENAL_LONG_TERM = 5;
 
 		
-		int Max_Result = Iteration_Amount/10;
+		int Max_Taboo = Iteration_Amount/10;
 		int TIME_TRY = Iteration_Amount/10;
 	};
 

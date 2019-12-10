@@ -6,13 +6,19 @@ Tabo::Tabo(std::vector<City> & cities, Config config)
 	this->results.clear();
 	this->_config = config;
 	this->cities = cities;
+	if (_config.Neigh_Size< cities.size())
+		this->_config.Neigh_Size = cities.size();
 	this->fillMatrix(cities);
 	this->iterImprovement = 0;
 }
 void Tabo::FullAlgorithm()
 {
-	_bestResult = getFirstResult();
-	results.push_back(_bestResult);
+	this->iterImprovement = 0;
+	this->results.clear();
+
+	this->_bestResult = getFirstResult();
+	this->results.push_back(_bestResult);
+
 	for (iteration = 0; iteration < _config.Iteration_Amount; iteration++)
 	{
 		auto neigh = createNeighb(_bestResult.path); //tworzy neighbourhood
@@ -26,7 +32,7 @@ void Tabo::FullAlgorithm()
 		}
 		neighvalue /= neigh.size();
 		this->neighvalues.push_back(neighvalue);
-		showIteration(bestCandidate);
+		//showIteration(bestCandidate);
 		if (bestCandidate.dist < _bestResult.dist) //sprawdza czy najlepszy wynik (value) z neigh, jest krotszy od tychczasowego najlepszego wyniku.
 		{
 			iterImprovement = 0;
@@ -43,7 +49,7 @@ void Tabo::FullAlgorithm()
 			results.push_back(bestCandidate);
 		}
 
-		if (results.size() > _config.Max_Result)
+		if (results.size() > _config.Max_Taboo)
 			results.erase(results.begin());
 		if (iterImprovement > _config.TIME_TRY)
 			break;
@@ -102,7 +108,6 @@ double Tabo::getValue(Result & res)
 {
 	double value = 0;
 	value += getDistance(res.path);
-	value += res.time;
 
 
 	for (auto & test : this->results)
@@ -110,7 +115,7 @@ double Tabo::getValue(Result & res)
 		{
 			res.isTabu = true;
 			test.time += _config.PENAL_LONG_TERM;
-			value += test.time;
+			value +=(value * test.time) / 100.0;
 			if (test.isTabu)
 			{
 				value = value + value / 10;
