@@ -29,11 +29,16 @@ void Tabo::FullAlgorithm()
 			_bestResult = bestCandidate;
 			std::cout << "Znaleziona lepsza wartosc" << std::endl;
 		}
+
+
 		if (!bestCandidate.isTabu) //Jezeli bestCandidate.isTabu, to znaczy ze result juz istnieje i go nie dodajemy.
 		{
 			bestCandidate.isTabu = false;
 			results.push_back(bestCandidate);
 		}
+
+		if (results.size() > _config.Max_Result)
+			results.erase(results.begin());
 
 	}
 	showBest();
@@ -90,6 +95,8 @@ double Tabo::getValue(Result & res)
 	double value = 0;
 	value += getDistance(res.path);
 	value += res.time;
+
+
 	for (auto & test : this->results)
 		if (test.path == res.path)
 		{
@@ -104,6 +111,8 @@ double Tabo::getValue(Result & res)
 				test.isTabu = true;
 			return value;
 		}
+
+
 	return value;
 }
 

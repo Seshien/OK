@@ -28,7 +28,7 @@ void saveToFile(Tabo tabo, std::string file_name="default")
 	my_file.open(file_name.c_str(), ios::app);
 	pair<double, double> result = tabo.returnBest();
 	Tabo::Config config = tabo.returnConfig();
-	my_file << config.Neigh_size << ":" << config.NUM_INTERATION << ":" << config.PENAL_LONG_TERM << std::endl;
+	my_file << config.Neigh_Size << ":" << config.Iteration_Amount << ":" << config.PENAL_LONG_TERM << ":" << config.Max_Result << ":" << config.TIME_TRY << std::endl;
 	my_file << result.first << ":" << result.second << std::endl;
 	my_file.close();
 }

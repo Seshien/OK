@@ -16,8 +16,8 @@ public:
 
 	struct Config
 	{
-		int Neigh_Size = 40;
-		int Iteration_Amount = 2000;
+		int Neigh_Size = 50;
+		int Iteration_Amount = 5000;
 		int PENAL_LONG_TERM = 10;
 
 		
