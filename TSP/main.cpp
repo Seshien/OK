@@ -153,6 +153,7 @@ int main()
 				break;
 			case 'g':
 				tabo.FullAlgorithm();
+				saveToFile(tabo, file_name);
 				break;
 			case 'c':
 				std::cout << "Work in Progress" << std::endl;

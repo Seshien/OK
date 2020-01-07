@@ -2,6 +2,10 @@
 #include "city.h"
 #include "generator.h"
 #include "Greedy.h"
+#include "tuple"
+#include <tuple>
+#include <algorithm>
+#include <random>
 class Tabo
 {
 public:
@@ -15,15 +19,23 @@ public:
 		std::pair<int, int> changed;
 	};
 
+	struct Tabo_info
+	{
+		int index1;
+		int index2;
+		int time;
+	};
+
 	struct Config
 	{
-		int Neigh_Size = 50;
-		int Iteration_Amount = 10000;
-		int PENAL_LONG_TERM = 5;
-
+		int Neigh_Size = 100;
+		int Iteration_Amount = 20000;
+		int PENAL_LONG_TERM = 25;
+		int DIVERSIFICATION = Iteration_Amount / 25;
+		int NUMBER_OF_CHANGES = 20;
 		
-		int Max_Taboo = Iteration_Amount/10;
-		int TIME_TRY = Iteration_Amount/10;
+		int Max_Taboo = 1000;//Iteration_Amount/10;
+		int TIME_TRY = 1000;// Iteration_Amount / 10;
 	};
 
 	Tabo(std::vector<City> & cities, Config config);
@@ -37,17 +49,26 @@ public:
 	pair<double, double> returnBest();
 	Config returnConfig();
 
+	bool checkPairs(pair<int, int> pair1, pair<int, int> pair2);
+	bool checkTaboList(pair<int, int> position);
+
 private:
 
 	int iteration;
 	Config _config;
 	Result _bestResult;
+	Result currentSolution;
+	std::vector<int> frequency_count;
+	std::vector<int> frequency_zero;
 	std::vector<Result> results;
+	std::vector<Result> previous_results;
 	//std::vector<Result> taboresults;
 	std::vector<City> cities;
 	std::vector<double> neighvalues;
+	std::vector<Tabo_info> taboList;
 	int iterImprovement;
-
+	// Czas, ID1, ID2
+	pair<int, int> tabu;
 	Tabo::Result getFirstResult();
 	Tabo::Result getResult(std::vector<int> & path, std::pair<int, int> changed = { -1,-1 });
 	double getDistance(std::vector<int> path);
@@ -56,7 +77,9 @@ private:
 	void showIteration(Result res);
 
 	std::vector<Result> createNeighb(std::vector<int> & path);
+	std::vector<Result> createNeighb2(std::vector<int> & path);
 	std::vector<int> ShufflePath(std::vector<int> path, pair<int, int> & changed);
+	std::vector<int> ChangeTwo(std::vector<int> path, pair<int, int> positions);
 	double getValue(Result & res);
 
 	std::vector<std::vector<double>> distmatrix;
