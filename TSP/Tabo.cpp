@@ -9,7 +9,7 @@ Tabo::Tabo(std::vector<City> & cities, Config config)
 	if (_config.Neigh_Size< cities.size())
 		this->_config.Neigh_Size = cities.size();
 	this->fillMatrix(cities);
-	this->printMatrix();
+	//this->printMatrix();
 	this->iterImprovement = 0;
 }
 void Tabo::FullAlgorithm()
@@ -221,11 +221,21 @@ std::vector<Tabo::Result> Tabo::createNeighb2(std::vector<int>& path)
 	{
 		positions.first = path[i];
 		positions.second = path[j];
-		if (!checkTaboList(positions))
+		std::vector<int> new_path = ChangeTwo(path, positions);
+		if (checkTaboList(positions))
 		{
-			std::vector<int> new_path = ChangeTwo(path, positions);
+			// Warunek aspiracji
+			if (getDistance(new_path) * this->_config.TABO_VALUE_PENALTY < currentSolution.dist)
+			{
+				std::cout << "Warunek aspiracji spelniony!" << std::endl;
+				neigh.push_back(getResult(new_path, positions));
+			}
+		}
+		else
+		{
 			neigh.push_back(getResult(new_path, positions));
 		}
+
 		j++;
 		if (j == cities.size())
 		{
