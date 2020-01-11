@@ -31,8 +31,8 @@ public:
 		int Neigh_Size = 100;
 		int Iteration_Amount = 1000;
 		int PENAL_LONG_TERM = 20;
-		int DIVERSIFICATION = Iteration_Amount / 200;
-		int NUMBER_OF_CHANGES = 150;
+		int DIVERSIFICATION = 10;
+		int NUMBER_OF_CHANGES = 300;
 		float TABO_VALUE_PENALTY = 1.001f;
 		
 		int Max_Taboo = 1000;//Iteration_Amount/10;

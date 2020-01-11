@@ -31,7 +31,6 @@ void Tabo::FullAlgorithm()
 		//auto neigh = createNeighb(_bestResult.path); //tworzy neighbourhood
 		auto neigh = createNeighb2(this->currentSolution.path);
 		Result bestCandidate = neigh[0]; //tworzy result z pierwszego patha
-		
 		double neighvalue = bestCandidate.value;
 		for (int i = 1; i < neigh.size(); i++)
 		{
@@ -66,7 +65,6 @@ void Tabo::FullAlgorithm()
 		}
 		else
 			iterImprovement++;
-
 		if (iterImprovement >= this->_config.DIVERSIFICATION)
 		{
 			for (int i = 0; i < frequency_count.size(); i++)
@@ -80,7 +78,7 @@ void Tabo::FullAlgorithm()
 			std::shuffle(std::begin(frequency_zero), std::end(frequency_zero), rng);
 			for (int i = 0; i < this->_config.NUMBER_OF_CHANGES; i++)
 			{
-				if (i >= frequency_zero.size())
+				if (i+1 >= frequency_zero.size())
 					break;
 				ChangeTwo(currentSolution.path, std::make_pair(frequency_zero[i], frequency_zero[i+1]));
 			}
@@ -215,12 +213,25 @@ std::vector<Tabo::Result> Tabo::createNeighb2(std::vector<int>& path)
 	std::vector<Tabo::Result> neigh;
 	int i = 0;
 	int j = 1;
+	int start_point = 0;
+	if (path.size() > 150)
+	{
+		start_point= rand() % (path.size() - 150);
+		//std::cout << "Path_size: " << path.size() << std::endl;
+		//std::cout << "Start point: " << start_point << std::endl;
+		i = start_point;
+		j = i + 1;
+	}
 	pair<int, int> positions;
 	//int combinations = cities.size() * (cities.size() - 1);
-	while (j < cities.size())
+	//std::cout << "Path_size: " << path.size() << std::endl;
+	//std::cout << "Path at 50: " << path[50] << std::endl;
+	//std::cout << "Path at 51: " << path[51] << std::endl;
+	while (true)
 	{
 		positions.first = path[i];
 		positions.second = path[j];
+		
 		std::vector<int> new_path = ChangeTwo(path, positions);
 		if (checkTaboList(positions))
 		{
@@ -237,12 +248,12 @@ std::vector<Tabo::Result> Tabo::createNeighb2(std::vector<int>& path)
 		}
 
 		j++;
-		if (j == cities.size())
+		if (j  == cities.size() || j  == start_point + 149)
 		{
 			i++;
 			j = i + 1;
 		}
-		if (i - 1 == cities.size())
+		if (i + 1 == cities.size() || i + 1 == start_point + 149)
 		{
 			break;
 		}
