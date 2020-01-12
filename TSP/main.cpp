@@ -27,9 +27,17 @@ void saveToFile(Tabo tabo, std::string file_name="default")
 	file_name = "wynik_" + file_name;
 	my_file.open(file_name.c_str(), ios::app);
 	pair<double, double> result = tabo.returnBest();
+	vector<int> result_path = tabo.returnBestPath();
 	Tabo::Config config = tabo.returnConfig();
-	my_file << config.Neigh_Size << ":" << config.Iteration_Amount << ":" << config.PENAL_LONG_TERM << ":" << config.Max_Taboo << ":" << config.TIME_TRY << std::endl;
+	//my_file << config.Neigh_Size << ":" << config.Iteration_Amount << ":" << config.PENAL_LONG_TERM << ":" << config.Max_Taboo << ":" << config.TIME_TRY << std::endl;
+	my_file << "L. iteracji | Czas Tabo | Czas dywersyfikacji | L. zmian w dywersyfikacji | Mno¿nik kary Tabo" << std::endl;
+	my_file << config.Iteration_Amount << ":" << config.PENAL_LONG_TERM << ":" << config.DIVERSIFICATION << ":" << config.NUMBER_OF_CHANGES << ":" << config.TABO_VALUE_PENALTY << std::endl;
 	my_file << result.first << ":" << result.second << std::endl;
+	for (int i = 0; i < result_path.size(); i++)
+	{
+		my_file << result_path[i] << " ";
+	}
+	my_file << std::endl;
 	my_file.close();
 }
 int read_file( vector<City>& cities, std::string & file_name, int beginning = 0)

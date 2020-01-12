@@ -48,6 +48,7 @@ public:
 
 	void showBest();
 	pair<double, double> returnBest();
+	vector<int> returnBestPath();
 	Config returnConfig();
 
 	bool checkPairs(pair<int, int> pair1, pair<int, int> pair2);

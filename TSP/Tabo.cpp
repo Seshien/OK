@@ -120,6 +120,11 @@ pair<double, double> Tabo::returnBest()
 	return pair<double, double>(_bestResult.dist, _bestResult.value);
 }
 
+vector<int> Tabo::returnBestPath()
+{
+	return _bestResult.path;
+}
+
 Tabo::Config Tabo::returnConfig()
 {
 	return this->_config;
@@ -177,7 +182,7 @@ double Tabo::getValue(Result & res)
 			}
 			else
 				test.isTabu = true;
-			return value;
+			 value;
 		}
 	}*/
 	
