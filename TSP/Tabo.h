@@ -28,6 +28,7 @@ public:
 
 	struct Config
 	{
+		int ITERS_TO_SAVE[3] = { 5, 10, 20 };
 		int Neigh_Size = 100;
 		int Iteration_Amount = 1000;
 		int PENAL_LONG_TERM = 20;
@@ -43,7 +44,7 @@ public:
 	~Tabo();
 
 	void FullAlgorithm();
-
+	void saveIter(int iter_num);
 	void printMatrix();
 
 	void showBest();
@@ -51,11 +52,12 @@ public:
 	vector<int> returnBestPath();
 	Config returnConfig();
 
+	std::string filename;
+	
 	bool checkPairs(pair<int, int> pair1, pair<int, int> pair2);
 	bool checkTaboList(pair<int, int> position);
 
 private:
-
 	int iteration;
 	Config _config;
 	Result _bestResult;

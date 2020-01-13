@@ -12,6 +12,21 @@ Tabo::Tabo(std::vector<City> & cities, Config config)
 	//this->printMatrix();
 	this->iterImprovement = 0;
 }
+
+void Tabo::saveIter(int iter_num)
+{
+	ofstream my_file;
+	my_file.open(this->filename.c_str(), ios::app);
+	my_file << "ZAPISANE ITERACJE: " << std::endl;
+	my_file << "Iteracja[" << this->_config.ITERS_TO_SAVE[iter_num] << "]:" << std::endl;
+	for (int j = 0; j < this->currentSolution.path.size(); j++)
+	{
+		my_file << this->currentSolution.path[j] << " ";
+	}
+	my_file << std::endl;
+	my_file.close();
+}
+
 void Tabo::FullAlgorithm()
 {
 	for (int i = 0; i < cities.size(); i++)
@@ -94,6 +109,13 @@ void Tabo::FullAlgorithm()
 			results.erase(results.begin());
 		//if (iterImprovement > _config.TIME_TRY)
 			//break;
+		for (int i = 0; i < sizeof(this->_config.ITERS_TO_SAVE) / sizeof(int); i++)
+		{
+			if (i == iteration)
+			{
+				saveIter(i);
+			}
+		}
 	}
 	showBest();
 	

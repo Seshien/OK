@@ -138,6 +138,7 @@ int main()
 		std::cin.sync();
 		std::cin.get();
 		Tabo tabo(cities, config);
+		tabo.filename = "wynik_" + file_name;
 		while (!cities.empty())
 		{
 			std::cout << "<-------------------------------------------------------------->" << std::endl;
