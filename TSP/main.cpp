@@ -35,7 +35,7 @@ void saveToFile(Tabo tabo, std::string file_name="default")
 	my_file << result.first << ":" << result.second << std::endl;
 	for (int i = 0; i < result_path.size(); i++)
 	{
-		my_file << result_path[i] << " ";
+		my_file << result_path[i] + 1 << " ";
 	}
 	my_file << std::endl;
 	my_file << std::endl;
