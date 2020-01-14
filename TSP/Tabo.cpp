@@ -23,6 +23,7 @@ void Tabo::saveIter(int iter_num)
 	{
 		my_file << this->currentSolution.path[j] + 1 << " ";
 	}
+	my_file << "Odleglosc: " << currentSolution.dist << std::endl;
 	my_file << std::endl;
 	my_file.close();
 }

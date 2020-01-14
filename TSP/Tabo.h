@@ -28,7 +28,11 @@ public:
 
 	struct Config
 	{
+<<<<<<< HEAD
 		int ITERS_TO_SAVE[1] = { 5 };
+=======
+		int ITERS_TO_SAVE[6] = { 5, 10, 20, 50, 100, 500 };
+>>>>>>> fd6f5a0044bf2fc5c778a43c63b8ef7dc87acf1d
 		int Neigh_Size = 100;
 		int Iteration_Amount = 5000;
 		int PENAL_LONG_TERM = 150;
