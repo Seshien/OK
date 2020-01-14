@@ -21,7 +21,7 @@ void Tabo::saveIter(int iter_num)
 	my_file << "Iteracja[" << this->_config.ITERS_TO_SAVE[iter_num] << "]:" << std::endl;
 	for (int j = 0; j < this->currentSolution.path.size(); j++)
 	{
-		my_file << this->currentSolution.path[j] << " ";
+		my_file << this->currentSolution.path[j] + 1 << " ";
 	}
 	my_file << std::endl;
 	my_file.close();
