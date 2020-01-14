@@ -38,6 +38,9 @@ void saveToFile(Tabo tabo, std::string file_name="default")
 		my_file << result_path[i] << " ";
 	}
 	my_file << std::endl;
+	my_file << std::endl;
+	my_file << std::endl;
+	my_file << std::endl;
 	my_file.close();
 }
 int read_file( vector<City>& cities, std::string & file_name, int beginning = 0)
