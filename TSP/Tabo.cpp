@@ -83,9 +83,16 @@ void Tabo::FullAlgorithm()
 			iterImprovement++;
 		if (iterImprovement >= this->_config.DIVERSIFICATION)
 		{
+			std::cout << "Shuffle!" << std::endl;
+			long int average = 0;
 			for (int i = 0; i < frequency_count.size(); i++)
 			{
-				if (this->frequency_count[i] == 0)
+				average += frequency_count[i];
+			}
+			average /= frequency_count.size();
+			for (int i = 0; i < frequency_count.size(); i++)
+			{
+				if (this->frequency_count[i]  < average)
 				{
 					frequency_zero.push_back(i);
 				}
@@ -289,7 +296,7 @@ std::vector<Tabo::Result> Tabo::createNeighb2(std::vector<int>& path)
 	return neigh;
 }
 
-std::vector<int> Tabo::ChangeTwo(std::vector<int> path, pair<int, int> positions)
+std::vector<int> Tabo::ChangeTwo(std::vector<int> &path, pair<int, int> positions)
 {
 	std::vector<int> new_path = std::vector<int>(path);
 	int tmp = path[positions.first];
