@@ -28,13 +28,13 @@ public:
 
 	struct Config
 	{
-		int ITERS_TO_SAVE[3] = { 5, 10, 20 };
+		int ITERS_TO_SAVE[1] = { 5 };
 		int Neigh_Size = 100;
-		int Iteration_Amount = 1000;
-		int PENAL_LONG_TERM = 20;
-		int DIVERSIFICATION = 10;
-		int NUMBER_OF_CHANGES = 300;
-		float TABO_VALUE_PENALTY = 1.001f;
+		int Iteration_Amount = 5000;
+		int PENAL_LONG_TERM = 150;
+		int DIVERSIFICATION = 100;
+		int NUMBER_OF_CHANGES = 20;
+		float TABO_VALUE_PENALTY = 1.01f;
 		
 		int Max_Taboo = 1000;//Iteration_Amount/10;
 		int TIME_TRY = 1000;// Iteration_Amount / 10;
@@ -83,7 +83,7 @@ private:
 	std::vector<Result> createNeighb(std::vector<int> & path);
 	std::vector<Result> createNeighb2(std::vector<int> & path);
 	std::vector<int> ShufflePath(std::vector<int> path, pair<int, int> & changed);
-	std::vector<int> ChangeTwo(std::vector<int> path, pair<int, int> positions);
+	std::vector<int> ChangeTwo(std::vector<int> &path, pair<int, int> positions);
 	double getValue(Result & res);
 
 	std::vector<std::vector<double>> distmatrix;
