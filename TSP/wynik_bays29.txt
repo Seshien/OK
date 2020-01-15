@@ -1,0 +1,115 @@
+ZAPISANE ITERACJE: 
+Iteracja[5]:
+Obecna Iteracja 
+6 1 28 12 9 5 21 2 20 10 4 15 18 14 17 22 11 19 25 7 23 27 8 24 16 13 29 3 26 
+Odleglosc: 9761.68
+Najlepsza Iteracja 
+6 1 28 12 9 5 21 2 20 10 4 15 18 14 17 22 11 19 25 7 23 27 8 24 16 13 29 3 26 
+Odleglosc: 9761.68
+
+ZAPISANE ITERACJE: 
+Iteracja[10]:
+Obecna Iteracja 
+9 12 28 1 6 5 21 2 20 10 4 15 18 14 17 22 11 19 25 7 23 8 24 27 16 13 3 29 26 
+Odleglosc: 9742.44
+Najlepsza Iteracja 
+9 12 28 1 6 5 21 2 20 10 4 15 18 14 17 22 11 19 25 7 23 27 8 24 16 13 29 3 26 
+Odleglosc: 9594.71
+
+ZAPISANE ITERACJE: 
+Iteracja[20]:
+Obecna Iteracja 
+9 12 28 1 6 5 21 2 10 20 4 15 14 18 17 22 11 19 25 7 23 27 8 24 16 13 3 29 26 
+Odleglosc: 9929.06
+Najlepsza Iteracja 
+9 12 28 1 6 5 21 2 20 10 4 15 18 14 17 22 11 19 25 7 23 27 8 24 16 13 29 3 26 
+Odleglosc: 9594.71
+
+ZAPISANE ITERACJE: 
+Iteracja[50]:
+Obecna Iteracja 
+9 12 28 1 6 5 21 2 20 10 15 4 14 18 17 22 11 19 25 7 23 27 8 24 16 13 3 29 26 
+Odleglosc: 10077.8
+Najlepsza Iteracja 
+9 12 28 1 6 5 21 2 20 10 4 15 18 14 17 22 11 19 25 7 23 27 8 24 16 13 29 3 26 
+Odleglosc: 9594.71
+
+ZAPISANE ITERACJE: 
+Iteracja[100]:
+Obecna Iteracja 
+9 12 28 1 6 5 21 2 20 10 4 15 14 11 17 22 18 19 25 7 23 27 8 24 16 13 3 29 26 
+Odleglosc: 10324.5
+Najlepsza Iteracja 
+9 12 28 1 6 5 21 2 20 10 4 15 18 14 17 22 11 19 25 7 23 27 8 24 16 13 29 3 26 
+Odleglosc: 9594.71
+
+ZAPISANE ITERACJE: 
+Iteracja[500]:
+Obecna Iteracja 
+26 9 12 6 28 1 21 2 20 10 4 15 18 14 17 22 11 19 25 7 23 8 24 27 16 13 5 3 29 
+Odleglosc: 9566.51
+Najlepsza Iteracja 
+26 9 6 12 28 1 21 2 20 10 4 15 14 18 17 22 11 19 25 7 23 27 8 24 16 13 5 29 3 
+Odleglosc: 9527.63
+
+ZAPISANE ITERACJE: 
+Iteracja[1000]:
+Obecna Iteracja 
+9 5 6 12 28 1 21 2 20 10 4 15 14 18 17 22 11 19 25 7 23 27 8 24 16 13 3 29 26 
+Odleglosc: 9561.86
+Najlepsza Iteracja 
+5 9 6 12 28 1 21 2 20 10 4 15 18 14 17 22 11 19 25 7 23 27 8 24 16 13 29 3 26 
+Odleglosc: 9405.9
+
+ZAPISANE ITERACJE: 
+Iteracja[2000]:
+Obecna Iteracja 
+5 9 12 6 28 1 21 2 20 10 4 15 18 14 17 22 11 19 25 7 23 8 24 27 16 13 29 3 26 
+Odleglosc: 9452.23
+Najlepsza Iteracja 
+5 9 6 12 28 1 21 2 20 10 4 15 18 14 17 22 11 19 25 7 23 27 8 24 16 13 29 3 26 
+Odleglosc: 9405.9
+
+ZAPISANE ITERACJE: 
+Iteracja[3000]:
+Obecna Iteracja 
+5 9 12 6 28 1 21 2 20 10 4 15 18 14 17 22 11 19 25 7 23 8 24 27 16 13 29 3 26 
+Odleglosc: 9452.23
+Najlepsza Iteracja 
+5 9 6 12 28 1 21 2 20 10 4 15 18 14 17 22 11 19 25 7 23 27 8 24 16 13 29 3 26 
+Odleglosc: 9405.9
+
+ZAPISANE ITERACJE: 
+Iteracja[4000]:
+Obecna Iteracja 
+26 9 6 12 28 1 21 2 20 10 4 15 11 18 17 22 14 19 25 7 23 27 8 24 16 13 5 29 3 
+Odleglosc: 9885.62
+Najlepsza Iteracja 
+5 9 6 12 28 1 21 2 20 10 4 15 18 14 17 22 11 19 25 7 23 27 8 24 16 13 29 3 26 
+Odleglosc: 9405.9
+
+ZAPISANE ITERACJE: 
+Iteracja[5000]:
+Obecna Iteracja 
+5 9 12 6 28 1 21 10 20 2 4 15 18 14 17 22 11 19 25 7 23 8 24 27 16 13 3 29 26 
+Odleglosc: 10115.6
+Najlepsza Iteracja 
+5 9 6 12 28 1 21 2 20 10 4 15 18 14 17 22 11 19 25 7 23 27 8 24 16 13 29 3 26 
+Odleglosc: 9405.9
+
+ZAPISANE ITERACJE: 
+Iteracja[6000]:
+Obecna Iteracja 
+5 9 12 6 28 1 21 2 20 10 4 15 18 14 17 22 11 19 25 7 23 16 24 27 8 13 3 29 26 
+Odleglosc: 9766.56
+Najlepsza Iteracja 
+5 9 6 12 28 1 21 2 20 10 4 15 18 14 17 22 11 19 25 7 23 27 8 24 16 13 29 3 26 
+Odleglosc: 9405.9
+
+L. iteracji | Czas Tabo | Czas dywersyfikacji | L. zmian w dywersyfikacji | Mno¿nik kary Tabo | Precision | Shuffle try
+7000:150:100:3:1.0110:70
+9405.9:9405.9
+5 9 6 12 28 1 21 2 20 10 4 15 18 14 17 22 11 19 25 7 23 27 8 24 16 13 29 3 26 
+
+
+
