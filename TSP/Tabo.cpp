@@ -159,7 +159,11 @@ bool Tabo::Step()
 void Tabo::Shuffle()
 {
 	std::cout << "Shuffle!" << std::endl;
-	//this->currentSolution = this->_bestResult;
+	if (this->_config.SHUFFLE_CURRENT == true)
+	{
+		this->currentSolution = this->_bestResult;
+	}
+	
 	long int average = 0;
 	for (int i = 0; i < frequency_count.size(); i++)
 	{

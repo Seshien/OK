@@ -36,6 +36,7 @@ public:
 		int DIVERSIFICATION = 100;
 		int NUMBER_OF_CHANGES = 10;
 		float TABO_VALUE_PENALTY = 1.01f;
+		bool SHUFFLE_CURRENT = true;
 		
 		int Precision = 10;//Iteration_Amount/10;
 		int Shuffle_Try = 50;// Iteration_Amount / 10;
