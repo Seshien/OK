@@ -28,26 +28,25 @@ public:
 
 	struct Config
 	{
-<<<<<<< HEAD
-		int ITERS_TO_SAVE[1] = { 5 };
-=======
-		int ITERS_TO_SAVE[6] = { 5, 10, 20, 50, 100, 500 };
->>>>>>> fd6f5a0044bf2fc5c778a43c63b8ef7dc87acf1d
-		int Neigh_Size = 100;
-		int Iteration_Amount = 5000;
-		int PENAL_LONG_TERM = 150;
-		int DIVERSIFICATION = 100;
-		int NUMBER_OF_CHANGES = 20;
+		int ITERS_TO_SAVE[13] = { 5, 10, 20, 50, 100, 500, 1000, 2000, 3000, 4000, 5000, 6000, 7000 };
+		int Neigh_Size = 150;
+		int Iteration_Amount = 7000;
+		int PENAL_LONG_TERM = 80;
+		int DIVERSIFICATION = 70;
+		int NUMBER_OF_CHANGES = 10;
 		float TABO_VALUE_PENALTY = 1.01f;
 		
-		int Max_Taboo = 1000;//Iteration_Amount/10;
-		int TIME_TRY = 1000;// Iteration_Amount / 10;
+		int Precision = 10;//Iteration_Amount/10;
+		int Shuffle_Try = 70;// Iteration_Amount / 10;
 	};
 
 	Tabo(std::vector<City> & cities, Config config);
+	void init();
 	~Tabo();
 
 	void FullAlgorithm();
+	bool Step();
+	void Shuffle();
 	void saveIter(int iter_num);
 	void printMatrix();
 
@@ -63,6 +62,7 @@ public:
 
 private:
 	int iteration;
+	int shuffleTimer;
 	Config _config;
 	Result _bestResult;
 	Result currentSolution;
@@ -85,7 +85,7 @@ private:
 	void showIteration(Result res);
 
 	std::vector<Result> createNeighb(std::vector<int> & path);
-	std::vector<Result> createNeighb2(std::vector<int> & path);
+	std::vector<Result> createNeighbPartial(std::vector<int> & path);
 	std::vector<int> ShufflePath(std::vector<int> path, pair<int, int> & changed);
 	std::vector<int> ChangeTwo(std::vector<int> &path, pair<int, int> positions);
 	double getValue(Result & res);

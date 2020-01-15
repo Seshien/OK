@@ -74,16 +74,6 @@ int read_file( vector<City>& cities, std::string & file_name, int beginning = 0)
 	return amount;
 }
 
-void TSP_genetic(vector<City> &cities, int amount)
-{
-	double CROSSOVER_CHANCE = 95.0;
-	double MUTATE_CHANCE = 30.0;
-	int NUMBER_OF_GENES = 20;
-	int NUMBER_OF_GENERATIONS = 200;
-	int NUMBER_OF_ELITE = 3;
-	Genetic_alg algorytm(cities, amount, CROSSOVER_CHANCE, MUTATE_CHANCE, NUMBER_OF_GENES, NUMBER_OF_GENERATIONS, NUMBER_OF_ELITE);
-}
-
 int main()
 {
 	srand(time(0));

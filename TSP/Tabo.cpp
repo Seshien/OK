@@ -3,14 +3,35 @@
 
 Tabo::Tabo(std::vector<City> & cities, Config config)
 {
-	this->results.clear();
+	//this->results.clear();
 	this->_config = config;
 	this->cities = cities;
-	if (_config.Neigh_Size< cities.size())
-		this->_config.Neigh_Size = cities.size();
 	this->fillMatrix(cities);
-	//this->printMatrix();
+	this->init();
+}
+void Tabo::init()
+{
 	this->iterImprovement = 0;
+	if (cities.size() > 4 * _config.Neigh_Size)
+	{
+		_config.Shuffle_Try /= 20;
+		_config.Precision /= 10;
+		_config.PENAL_LONG_TERM *= 8;
+	}
+
+	else if (cities.size() > 2 * _config.Neigh_Size)
+	{
+		_config.Shuffle_Try /= 10;
+		_config.Precision /= 5;
+		_config.PENAL_LONG_TERM *= 4;
+	}
+
+	else if (cities.size() > _config.Neigh_Size)
+	{
+		_config.Shuffle_Try /= 5;
+		_config.Precision /= 3;
+		_config.PENAL_LONG_TERM *= 2;
+	}
 }
 
 void Tabo::saveIter(int iter_num)
@@ -19,13 +40,25 @@ void Tabo::saveIter(int iter_num)
 	my_file.open(this->filename.c_str(), ios::app);
 	my_file << "ZAPISANE ITERACJE: " << std::endl;
 	my_file << "Iteracja[" << this->_config.ITERS_TO_SAVE[iter_num] << "]:" << std::endl;
+	my_file << "Obecna Iteracja " << std::endl;
 	for (int j = 0; j < this->currentSolution.path.size(); j++)
 	{
 		my_file << this->currentSolution.path[j] + 1 << " ";
 	}
-	my_file << "Odleglosc: " << currentSolution.dist << std::endl;
+	my_file << std::endl << "Odleglosc: " << currentSolution.dist << std::endl;
+	my_file << "Najlepsza Iteracja " << std::endl;
+	for (int j = 0; j < _bestResult.path.size(); j++)
+	{
+		my_file << this->_bestResult.path[j] + 1 << " ";
+	}
+	my_file << std::endl << "Odleglosc: " << _bestResult.dist << std::endl;
 	my_file << std::endl;
 	my_file.close();
+	std::cout << "Iteracja[" << this->_config.ITERS_TO_SAVE[iter_num] << "]:" << std::endl;
+	std::cout << "Obecna Iteracja " << std::endl;
+	std::cout << "Odleglosc: " << currentSolution.dist << std::endl;
+	std::cout << "Najlepsza Iteracja " << std::endl;
+	std::cout << "Odleglosc: " << _bestResult.dist << std::endl;
 }
 
 void Tabo::FullAlgorithm()
@@ -36,99 +69,112 @@ void Tabo::FullAlgorithm()
 	}
 	this->taboList.clear();
 	this->iterImprovement = 0;
-	this->results.clear();
+	//this->results.clear();
 	this->_bestResult = this->getFirstResult();
 	this->currentSolution = this->_bestResult;
-	this->results.push_back(_bestResult);
+	//this->results.push_back(_bestResult);
 
 	for (iteration = 0; iteration < _config.Iteration_Amount; iteration++)
-	{
-		//std::cout << "Iteration";
-		//auto neigh = createNeighb(_bestResult.path); //tworzy neighbourhood
-		auto neigh = createNeighb2(this->currentSolution.path);
-		Result bestCandidate = neigh[0]; //tworzy result z pierwszego patha
-		double neighvalue = bestCandidate.value;
-		for (int i = 1; i < neigh.size(); i++)
-		{
-			neighvalue += neigh[i].value;
-			if (neigh[i].value < bestCandidate.value) //sprawdza czy wartosc resulta jest dotychczasowo najlepsza
-				bestCandidate = neigh[i];
-		}
-		neighvalue /= neigh.size();
-		this->neighvalues.push_back(neighvalue);
-		//showIteration(bestCandidate);
-		currentSolution = bestCandidate;
-		Tabo::Tabo_info tabo_info;
-		tabo_info.index1 = currentSolution.changed.first;
-		tabo_info.index2 = currentSolution.changed.second;
-		tabo_info.time = this->_config.PENAL_LONG_TERM;
-		this->taboList.push_back(tabo_info);
-		frequency_count[bestCandidate.changed.first]++;
-		frequency_count[bestCandidate.changed.second]++;
-		for (int i = this->taboList.size() - 1; i >= 0; i--)
-		{
-			this->taboList[i].time--;
-			if (this->taboList[i].time == 0)
-			{
-				this->taboList.erase(this->taboList.begin() + i);
-			}
-		}
-		if (bestCandidate.dist < _bestResult.dist) //sprawdza czy najlepszy wynik (value) z neigh, jest krotszy od tychczasowego najlepszego wyniku.
-		{
-			iterImprovement = 0;
-			_bestResult = bestCandidate;
-			std::cout << "Znaleziona lepsza wartosc" << std::endl;
-		}
-		else
-			iterImprovement++;
-		if (iterImprovement >= this->_config.DIVERSIFICATION)
-		{
-			std::cout << "Shuffle!" << std::endl;
-			long int average = 0;
-			for (int i = 0; i < frequency_count.size(); i++)
-			{
-				average += frequency_count[i];
-			}
-			average /= frequency_count.size();
-			for (int i = 0; i < frequency_count.size(); i++)
-			{
-				if (this->frequency_count[i]  < average)
-				{
-					frequency_zero.push_back(i);
-				}
-			}
-			auto rng = std::default_random_engine{};
-			std::shuffle(std::begin(frequency_zero), std::end(frequency_zero), rng);
-			for (int i = 0; i < this->_config.NUMBER_OF_CHANGES; i++)
-			{
-				if (i+1 >= frequency_zero.size())
-					break;
-				ChangeTwo(currentSolution.path, std::make_pair(frequency_zero[i], frequency_zero[i+1]));
-			}
-			iterImprovement = 0;
-		}
-		if (!bestCandidate.isTabu) //Jezeli bestCandidate.isTabu, to znaczy ze result juz istnieje i go nie dodajemy.
-		{
-			bestCandidate.isTabu = false;
-			results.push_back(bestCandidate);
-		}
-
-		if (results.size() > _config.Max_Taboo)
-			results.erase(results.begin());
-		//if (iterImprovement > _config.TIME_TRY)
-			//break;
-		for (int i = 0; i < sizeof(this->_config.ITERS_TO_SAVE) / sizeof(int); i++)
-		{
-			if (i == iteration)
-			{
-				saveIter(i);
-			}
-		}
-	}
+		if (!this->Step())
+			break;
 	showBest();
 	
 }
+bool Tabo::Step()
+{
+	std::vector<Tabo::Result> neigh;
+	if (iterImprovement < this->_config.Precision)
+		neigh = createNeighb(this->currentSolution.path);
+	else
+		neigh = createNeighbPartial(this->currentSolution.path);
+	Result bestCandidate = neigh[0]; //tworzy result z pierwszego patha
+	double neighvalue = bestCandidate.value;
+	for (int i = 1; i < neigh.size(); i++)
+	{
+		neighvalue += neigh[i].value;
+		if (neigh[i].value < bestCandidate.value) //sprawdza czy wartosc resulta jest dotychczasowo najlepsza
+			bestCandidate = neigh[i];
+	}
 
+	neighvalue /= neigh.size();
+	this->neighvalues.push_back(neighvalue);
+
+
+	//showIteration(bestCandidate);
+	currentSolution = bestCandidate;
+	Tabo::Tabo_info tabo_info;
+	tabo_info.index1 = currentSolution.changed.first;
+	tabo_info.index2 = currentSolution.changed.second;
+	tabo_info.time = this->_config.PENAL_LONG_TERM;
+	this->taboList.push_back(tabo_info);
+
+	frequency_count[bestCandidate.changed.first]++;
+	frequency_count[bestCandidate.changed.second]++;
+	for (int i = this->taboList.size() - 1; i >= 0; i--)
+	{
+		this->taboList[i].time--;
+		if (this->taboList[i].time == 0)
+		{
+			this->taboList.erase(this->taboList.begin() + i);
+		}
+	}
+
+
+	if (bestCandidate.dist < _bestResult.dist) //sprawdza czy najlepszy wynik (value) z neigh, jest krotszy od tychczasowego najlepszego wyniku.
+	{
+		iterImprovement = 0;
+		shuffleTimer=0;
+		std::cout << "Znaleziona lepsza wartosc: " << bestCandidate.dist << std::endl;
+		std::cout <<"Poprawa: " << _bestResult.dist - bestCandidate.dist << std::endl;
+		_bestResult = bestCandidate;
+	}
+	else
+		iterImprovement++;
+
+	if (iterImprovement >= this->_config.DIVERSIFICATION)
+	{
+		Shuffle();
+		shuffleTimer++;
+	}
+	for (int i = 0; i < sizeof(this->_config.ITERS_TO_SAVE) / sizeof(int); i++)
+	{
+		if (this->_config.ITERS_TO_SAVE[i] == iteration)
+		{
+			saveIter(i);
+		}
+	}
+	if (shuffleTimer > this->_config.Shuffle_Try)
+		return false;
+	else
+		return true;
+}
+void Tabo::Shuffle()
+{
+	std::cout << "Shuffle!" << std::endl;
+	//this->currentSolution = this->_bestResult;
+	long int average = 0;
+	for (int i = 0; i < frequency_count.size(); i++)
+	{
+		average += frequency_count[i];
+	}
+	average /= frequency_count.size();
+	for (int i = 0; i < frequency_count.size(); i++)
+	{
+		if (this->frequency_count[i] < average)
+		{
+			frequency_zero.push_back(i);
+		}
+	}
+	auto rng = std::default_random_engine{};
+	std::shuffle(std::begin(frequency_zero), std::end(frequency_zero), rng);
+	for (int i = 0; i < this->_config.NUMBER_OF_CHANGES; i++)
+	{
+		if (i + 1 >= frequency_zero.size())
+			break;
+		ChangeTwo(currentSolution.path, std::make_pair(frequency_zero[i], frequency_zero[i + 1]));
+	}
+	iterImprovement = 0;
+}
 void Tabo::showIteration(Result res)
 {
 	std::cout << "Iteracja: " << iteration <<" Srednia wartosc neighbourhood: "<< neighvalues.back() << std::endl;
@@ -174,8 +220,8 @@ Tabo::Result Tabo::getResult(std::vector<int> & path, std::pair<int, int> change
 	res.path = path;
 	res.isTabu = false;
 	res.time = 0;
-	res.value = getValue(res);
 	res.dist = getDistance(res.path);
+	res.value = getValue(res);
 	res.changed = changed;
 	return res;
 }
@@ -195,42 +241,7 @@ bool Tabo::checkPairs(pair<int, int> pair1, pair<int, int> pair2)
 
 double Tabo::getValue(Result & res)
 {
-	double value = 0;
-	value += getDistance(res.path);
-
-	
-	/*for (auto& test : this->results)
-	{
-		if (checkPairs(test.changed, res.changed))
-		{
-			res.isTabu = true;
-			test.time += _config.PENAL_LONG_TERM;
-			value += (value * test.time) / 100.0;
-			if (test.isTabu)
-			{
-				value = value + value / 10;
-			}
-			else
-				test.isTabu = true;
-			 value;
-		}
-	}*/
-	
-
-
-	return value;
-}
-
-std::vector<Tabo::Result> Tabo::createNeighb(std::vector<int> & path)
-{
-	std::vector<Tabo::Result> neigh;
-	for (int i = 0; i < this->_config.Neigh_Size; i++)
-	{
-		std::pair<int, int> changed = { -1,-1 };
-		auto shuffled = ShufflePath(path, changed);
-		neigh.push_back(getResult(shuffled, changed));
-	}
-	return neigh;
+	return res.dist;
 }
 
 bool Tabo::checkTaboList(pair<int, int> position)
@@ -243,15 +254,55 @@ bool Tabo::checkTaboList(pair<int, int> position)
 	return false;
 }
 
-std::vector<Tabo::Result> Tabo::createNeighb2(std::vector<int>& path)
+std::vector<Tabo::Result> Tabo::createNeighb(std::vector<int> & path)
+{
+	std::vector<Tabo::Result> neigh;
+	int i = 0;
+	int j = 1;
+	pair<int, int> positions;
+	while (true)
+	{
+		positions.first = path[i];
+		positions.second = path[j];
+		std::vector<int> new_path = ChangeTwo(path, positions);
+		if (checkTaboList(positions))
+		{
+			// Warunek aspiracji
+			if (getDistance(new_path) * this->_config.TABO_VALUE_PENALTY < currentSolution.dist)
+			{
+				//std::cout << "Warunek aspiracji spelniony!" << std::endl;
+				neigh.push_back(getResult(new_path, positions));
+			}
+		}
+		else
+		{
+			neigh.push_back(getResult(new_path, positions));
+		}
+
+		j++;
+		if (j == cities.size())
+		{
+			i++;
+			j = i + 1;
+		}
+		if (i + 1 == cities.size())
+		{
+			break;
+		}
+	}
+	return neigh;
+}
+
+std::vector<Tabo::Result> Tabo::createNeighbPartial(std::vector<int>& path)
 {
 	std::vector<Tabo::Result> neigh;
 	int i = 0;
 	int j = 1;
 	int start_point = 0;
-	if (path.size() > 150)
+	int limit = this->_config.Neigh_Size;
+	if (path.size() > limit)
 	{
-		start_point= rand() % (path.size() - 150);
+		start_point= rand() % (path.size() - limit);
 		//std::cout << "Path_size: " << path.size() << std::endl;
 		//std::cout << "Start point: " << start_point << std::endl;
 		i = start_point;
@@ -273,7 +324,7 @@ std::vector<Tabo::Result> Tabo::createNeighb2(std::vector<int>& path)
 			// Warunek aspiracji
 			if (getDistance(new_path) * this->_config.TABO_VALUE_PENALTY < currentSolution.dist)
 			{
-				std::cout << "Warunek aspiracji spelniony!" << std::endl;
+				//std::cout << "Warunek aspiracji spelniony!" << std::endl;
 				neigh.push_back(getResult(new_path, positions));
 			}
 		}
@@ -283,12 +334,12 @@ std::vector<Tabo::Result> Tabo::createNeighb2(std::vector<int>& path)
 		}
 
 		j++;
-		if (j  == cities.size() || j  == start_point + 149)
+		if (j  == cities.size() || j  == start_point + limit-1)
 		{
 			i++;
 			j = i + 1;
 		}
-		if (i + 1 == cities.size() || i + 1 == start_point + 149)
+		if (i + 1 == cities.size() || i + 1 == start_point + limit-1)
 		{
 			break;
 		}
