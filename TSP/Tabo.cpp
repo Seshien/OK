@@ -32,6 +32,14 @@ void Tabo::init()
 		_config.Precision /= 3;
 		_config.PENAL_LONG_TERM *= 2;
 	}
+
+	else if (cities.size() * 2 < _config.Neigh_Size)
+	{
+		_config.Iteration_Amount *= 2;
+		_config.Shuffle_Try *= 5;
+		_config.Precision *= 3;
+		_config.PENAL_LONG_TERM /= 2;
+	}
 }
 
 void Tabo::saveIter(int iter_num)
