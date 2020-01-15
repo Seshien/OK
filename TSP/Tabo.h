@@ -6,6 +6,7 @@
 #include <tuple>
 #include <algorithm>
 #include <random>
+#include <chrono>
 class Tabo
 {
 public:
@@ -29,12 +30,12 @@ public:
 	struct Config
 	{
 		int ITERS_TO_SAVE[13] = { 5, 10, 20, 50, 100, 500, 1000, 2000, 3000, 4000, 5000, 6000, 7000 };
-		int Neigh_Size = 400;
-		int Iteration_Amount = 3500;
-		int PENAL_LONG_TERM = 500;
-		int DIVERSIFICATION = 300;
-		int NUMBER_OF_CHANGES = 5;
-		float TABO_VALUE_PENALTY = 1.001f;
+		int Neigh_Size = 300;
+		int Iteration_Amount = 7000;
+		int PENAL_LONG_TERM = 180;
+		int DIVERSIFICATION = 100;
+		int NUMBER_OF_CHANGES = 10;
+		float TABO_VALUE_PENALTY = 1.01f;
 		
 		int Precision = 10;//Iteration_Amount/10;
 		int Shuffle_Try = 70;// Iteration_Amount / 10;

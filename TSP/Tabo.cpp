@@ -165,14 +165,29 @@ void Tabo::Shuffle()
 			frequency_zero.push_back(i);
 		}
 	}
-	auto rng = std::default_random_engine{};
-	std::shuffle(std::begin(frequency_zero), std::end(frequency_zero), rng);
+	unsigned seed = std::chrono::system_clock::now().time_since_epoch().count();
+	auto rng = std::default_random_engine(seed);
+	//std::cout << "freq before: " << frequency_zero[0] << std::endl;
+	std::random_shuffle(std::begin(frequency_zero), std::end(frequency_zero));
+	//std::cout << "freq after: " << frequency_zero[0] << std::endl;
+	//std::cout << "Sciezka przed: " << std::endl;
+	//for (int i = 0; i < currentSolution.path.size(); i++)
+	//{
+	//	std::cout << currentSolution.path[i] << " ";
+	//}
+	//std::cout << std::endl;
 	for (int i = 0; i < this->_config.NUMBER_OF_CHANGES; i++)
 	{
 		if (i + 1 >= frequency_zero.size())
 			break;
-		ChangeTwo(currentSolution.path, std::make_pair(frequency_zero[i], frequency_zero[i + 1]));
+		currentSolution.path = ChangeTwo(currentSolution.path, std::make_pair(frequency_zero[i], frequency_zero[i + 1]));
 	}
+	//std::cout << "Sciezka po: " << std::endl;
+	//for (int i = 0; i < currentSolution.path.size(); i++)
+	//{
+	//	std::cout << currentSolution.path[i] << " ";
+	//}
+	//std::cout << std::endl;
 	iterImprovement = 0;
 }
 void Tabo::showIteration(Result res)
